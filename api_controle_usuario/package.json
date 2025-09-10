@@ -30,5 +30,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
+  },
+  "_moduleAliases": {
+    "src": "./src"
   }
 }

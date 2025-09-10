@@ -4,7 +4,7 @@ const { redisClient } = require('./redisClient');
 class RedisTokenBlacklistRepository extends ITokenBlackListRepository {
     async add(token, expiresIn) {
         // Adiciona o token à blacklist com tempo de expiração
-        await redisClient.setEx('blacklist:${token}', expiresIn, 'blocked');
+        await redisClient.setEx(`blacklist:${token}`, expiresIn, 'blocked');
     }
 
     async exists(token) {

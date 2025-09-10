@@ -32,10 +32,10 @@ class AuthController {
 
   async logout(req, res, next) {
     try {
-      // Aqui você precisaria de um Use Case ou lógica de aplicação para invalidar o token.
-      // Por exemplo:
-      // const token = req.headers.authorization.split(' ')[1];
-      // await this.logoutUserUseCase.execute(token);
+      const token = req.headers.authorization?.split(' ')[1];
+      if (token) {
+        await this.logoutUserUseCase.execute(token);
+      }
       return res.status(200).json({ message: 'Logged out successfully.' });
     } catch (error) {
       next(error);
