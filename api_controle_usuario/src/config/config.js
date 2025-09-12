@@ -1,4 +1,3 @@
-// Importa a configuração da sua aplicação para o Sequelize CLI 
 const appConfig = require('../../config/index.js'); 
 
 module.exports = {

@@ -9,7 +9,7 @@ const fs = require('fs');
 
 // Importações da Infraestrutura
 const errorHandler = require('./Infrastructure/Express/middlewares/errorHandler');
-const SequelizeUserRepository = require('./Infrastructure/Persistence/Sequelize/SequelizeUserRepository');
+const SequelizeUserRepository = require("./Infrastructure/Persistence/Sequelize/models/SequelizeUserRepository.js");
 const RedisTokenBlacklistRepository = require('./Infrastructure/Persistence/Redis/RedisTokenBlacklistRepository');
 const JWTProvider = require('./Infrastructure/Providers/jwtProvider');
 const authRoutes = require('./Infrastructure/Express/routes/auth.routes');
