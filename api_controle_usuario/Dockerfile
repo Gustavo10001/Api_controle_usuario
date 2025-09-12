@@ -16,5 +16,5 @@ COPY . .
 # Expõe a porta usada pelo app
 EXPOSE 3000
 
-# Comando para rodar o app
-CMD ["node", "src/index.js"]
+# Comando para rodar o app (corrigido)
+CMD ["node", "src/server.js"]

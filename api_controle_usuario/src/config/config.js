@@ -1,4 +1,4 @@
-const appConfig = require('../../config/index.js'); 
+const appConfig = require('./index.js'); 
 
 module.exports = {
   development: { 

@@ -1,57 +1,58 @@
-// Importações de pacotes e middlewares
-const express = require('express');
-const cors = require('cors'); // Para permitir requisições de diferentes origens
-const morgan = require('morgan'); // Para logs de requisição
-const swaggerUi = require('swagger-ui-express');
-const yaml = require('js-yaml');
+'use strict';
+
 require('module-alias/register');
+
+const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
+const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
+const path = require('path');
 
-// Importações da Infraestrutura
-const errorHandler = require('./Infrastructure/Express/middlewares/errorHandler');
-const SequelizeUserRepository = require("./Infrastructure/Persistence/Sequelize/models/SequelizeUserRepository.js");
-const RedisTokenBlacklistRepository = require('./Infrastructure/Persistence/Redis/RedisTokenBlacklistRepository');
-const JWTProvider = require('./Infrastructure/Providers/jwtProvider');
-const authRoutes = require('./Infrastructure/Express/routes/auth.routes');
+// Middlewares e rotas
+const errorHandler = require('../src/Infrastructure/Express/middlewares/errorHandler');
+const authRoutes = require('../src/Infrastructure/Express/routes/auth.routes');
 
-// Importações dos Use Cases
-const RegisterUser = require('./Application/UseCases/Auth/registerUser');
-const LoginUser = require('./Application/UseCases/Auth/LoginUser');
+// Providers e Use Cases
+const JWTProvider = require('../src/Infrastructure/Providers/jwtProvider');
+const RegisterUser = require('src/Application/UseCases/Auth/RegisterUser');
+const LoginUser = require('src/Application/UseCases/Auth/LoginUser');
+
+// Repositórios
+const SequelizeUserRepository = require('../src/Infrastructure/Persistence/Sequelize/SequelizeUserRepository');
 
 const app = express();
 
-// --- Middlewares Globais ---
-app.use(express.json()); // Habilita o parsing de JSON no corpo das requisições
-app.use(cors()); // Permite requisições de outras origens (CORS)
-app.use(morgan('dev')); // Loga as requisições no console
+// Middlewares globais
+app.use(express.json());
+app.use(cors());
+app.use(morgan('dev'));
 
-// --- Injeção de Dependências ---
-// Repositórios
+// Injeção de dependências
 const userRepository = new SequelizeUserRepository();
-const tokenBlacklistRepository = new RedisTokenBlacklistRepository();
-
-// Provedores
 const jwtProvider = new JWTProvider();
 
-// Use Cases (recebem dependências de infraestrutura via construtor)
 const registerUserUseCase = new RegisterUser(userRepository);
 const loginUserUseCase = new LoginUser(userRepository, jwtProvider);
 
-// --- Rotas da API ---
-// A rota principal do Express para o nosso serviço de autenticação
+// Rotas
 app.use('/auth', authRoutes(registerUserUseCase, loginUserUseCase));
 
-// --- Configuração do Swagger UI ---
+// Swagger (carrega docs/swagger.yml se disponível)
 try {
-  const swaggerDocument = yaml.load(fs.readFileSync('./docs/swagger.yml', 'utf8'));
-  // Acessível em http://localhost:3000/api-docs
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  const yaml = require('js-yaml');
+  const swaggerPath = path.resolve(process.cwd(), 'docs', 'swagger.yml');
+  if (fs.existsSync(swaggerPath)) {
+    const swaggerDocument = yaml.load(fs.readFileSync(swaggerPath, 'utf8'));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  }
 } catch (e) {
   console.error('Failed to load swagger.yml file:', e);
 }
 
-// --- Middleware de Tratamento de Erros ---
-// Deve ser o último middleware a ser registrado
+// Middleware de tratamento de erros (sempre por último)
 app.use(errorHandler);
 
 module.exports = app;
+
+

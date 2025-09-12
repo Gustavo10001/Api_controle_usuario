@@ -1,6 +1,6 @@
-const Email = require('./ValueObjects/Email');
-const Password = require('./ValueObjects/Password'); // Assumimos que Password já faz o hashing
-const Name = require('./ValueObjects/Name');
+const Email = require('./email');
+const Password = require('./password'); // Assumimos que Password já faz o hashing
+const Name = require('./name');
 const { v4: uuidv4 } = require('uuid');
 
 class User {

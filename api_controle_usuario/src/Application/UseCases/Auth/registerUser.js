@@ -1,5 +1,5 @@
-const User = require('src/Domain/User/User');
-const UserOutput = require('src/Application/DTOs/UserOutput');
+const User = require('../../../Domain/User/ValueObjects/user');
+const UserOutput = require('../../DTOs/userOutput');
 const UserAlreadyExistsException = require('src/Domain/Exceptions/UserAlreadyExistsException');
 
 class RegisterUser {

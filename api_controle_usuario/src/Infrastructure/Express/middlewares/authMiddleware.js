@@ -1,21 +1,34 @@
+'use strict';
+
 const jwt = require('jsonwebtoken');
-const authConfig = require('src/config/auth'); // Note: This path might need adjustment based on your config file
+const { jwt: jwtConfig } = require('src/Config');
+const RedisTokenBlackListRepository = require('../../Persistence/Redis/RedisTokenBlacklistRepository');
 
-const authenticateToken = (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
 
-  if (!token) { // Corrected from the image for proper logic
+  if (!token) {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  jwt.verify(token, authConfig.jwtSecret, (err, user) => {
-    if (err) {
-      return res.status(403).json({ message: 'Invalid token' });
+  try {
+    const blacklistRepo = new RedisTokenBlackListRepository();
+    const isBlacklisted = await blacklistRepo.exists(token);
+    if (isBlacklisted) {
+      return res.status(401).json({ message: 'Token is blacklisted' });
     }
-    req.user = user; // Adiciona os dados do usuário decodificados ao objeto req
-    next();
-  });
+
+    jwt.verify(token, jwtConfig.secret, (err, user) => {
+      if (err) {
+        return res.status(403).json({ message: 'Invalid token' });
+      }
+      req.user = user;
+      next();
+    });
+  } catch (e) {
+    return res.status(500).json({ message: 'Auth error', detail: e.message });
+  }
 };
 
 module.exports = authenticateToken;

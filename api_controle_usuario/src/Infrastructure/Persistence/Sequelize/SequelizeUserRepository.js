@@ -1,6 +1,6 @@
 const IUserRepository = require('src/Domain/Repositories/IUserRepository');
-const UserModel = require('../models').User;
-const User = require('src/Domain/User/User');
+const UserModel = require('./models').User;
+const User = require('../../../Domain/User/ValueObjects/user');
 
 class SequelizeUserRepository extends IUserRepository {
 async save(user) {

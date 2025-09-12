@@ -1,6 +1,5 @@
-class UserOutput {
-  constructor(token, user) {
-    this.token = token;
+class userInput {
+  constructor(user) {
     this.user = {
       id: user.id,
       name: user.name,
@@ -9,4 +8,4 @@ class UserOutput {
   }
 }
 
-module.exports = UserOutput;
+module.exports = userInput;

@@ -22,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "module-alias": "^2.2.3",
     "morgan": "^1.10.1",
+    "mysql2": "^3.14.5",
     "pg": "^8.16.3",
     "redis": "^5.8.2",
     "sequelize": "^6.37.7",
