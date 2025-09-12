@@ -1,5 +1,5 @@
 const IUserRepository = require('src/Domain/Repositories/IUserRepository');
-const UserModel = require('./Models').User;
+const UserModel = require('../models').User;
 const User = require('src/Domain/User/User');
 
 class SequelizeUserRepository extends IUserRepository {
