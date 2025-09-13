@@ -69,8 +69,5 @@ Servidor disponível em `http://127.0.0.1:3000`
 - O middleware de autenticação verifica a blacklist antes de validar o token
 - As configurações são lidas de `process.env` (`src/Config/index.js`)
 
-### Entrega
-- Repositório GitHub: https://github.com/RenatoGarciaLopes/node_jwt.git
-- As imagens acima também estão na pasta `docs/prints/`
 
 
