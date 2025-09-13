@@ -15,8 +15,10 @@ const authRoutes = require('../src/Infrastructure/Express/routes/auth.routes');
 
 // Providers e Use Cases
 const JWTProvider = require('../src/Infrastructure/Providers/jwtProvider');
-const RegisterUser = require('src/Application/UseCases/Auth/RegisterUser');
-const LoginUser = require('src/Application/UseCases/Auth/LoginUser');
+const RegisterUser = require('src/Application/UseCases/Auth/registerUser');
+const LoginUser = require('src/Application/UseCases/Auth/loginUser');
+const LogoutUser = require('src/Application/UseCases/Auth/logoutUser');
+const RedisTokenBlacklistRepository = require('./Infrastructure/Persistence/Redis/RedisTokenBlacklistRepository');
 
 // Repositórios
 const SequelizeUserRepository = require('../src/Infrastructure/Persistence/Sequelize/SequelizeUserRepository');
@@ -31,12 +33,14 @@ app.use(morgan('dev'));
 // Injeção de dependências
 const userRepository = new SequelizeUserRepository();
 const jwtProvider = new JWTProvider();
+const tokenBlacklistRepository = new RedisTokenBlacklistRepository();
 
 const registerUserUseCase = new RegisterUser(userRepository);
 const loginUserUseCase = new LoginUser(userRepository, jwtProvider);
+const logoutUserUseCase = new LogoutUser(tokenBlacklistRepository, jwtProvider);
 
 // Rotas
-app.use('/auth', authRoutes(registerUserUseCase, loginUserUseCase));
+app.use('/auth', authRoutes(registerUserUseCase, loginUserUseCase, logoutUserUseCase));
 
 // Swagger (carrega docs/swagger.yml se disponível)
 try {

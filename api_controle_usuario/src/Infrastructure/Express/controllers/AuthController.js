@@ -1,11 +1,11 @@
 const RegisterUserInput = require('src/Application/DTOs/RegisterUserInput');
 const LoginUserInput = require('src/Application/DTOs/LoginUserInput');
-// Importar Use Cases injetados pelo app.js
 
 class AuthController {
-  constructor(registerUserUseCase, loginUserUseCase) {
+  constructor(registerUserUseCase, loginUserUseCase, logoutUserUseCase) {
     this.registerUserUseCase = registerUserUseCase;
     this.loginUserUseCase = loginUserUseCase;
+    this.logoutUserUseCase = logoutUserUseCase;
   }
 
   async register(req, res, next) {
@@ -33,10 +33,11 @@ class AuthController {
   async logout(req, res, next) {
     try {
       const token = req.headers.authorization?.split(' ')[1];
-      if (token) {
-        await this.logoutUserUseCase.execute(token);
+      if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
       }
-      return res.status(200).json({ message: 'Logged out successfully.' });
+      const result = await this.logoutUserUseCase.execute(token);
+      return res.status(200).json(result);
     } catch (error) {
       next(error);
     }

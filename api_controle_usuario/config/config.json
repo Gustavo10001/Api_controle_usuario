@@ -1,14 +1,14 @@
 {
     "development": {
-        "url": "postgres://postgres:123@localhost:5432/exemplo_api",
+        "url": "postgres://postgres:123@localhost:5432/api_node",
         "dialect": "postgres"
     },
     "test": {
-        "url": "postgres://postgres:123@localhost:5432/exemplo_api",
+        "url": "postgres://postgres:123@localhost:5432/api_node",
         "dialect": "postgres"
     },
     "production": {
-        "url": "postgres://postgres:123@localhost:5432/exemplo_api",
+        "url": "postgres://postgres:123@localhost:5432/api_node",
         "dialect": "postgres"
     }
 }

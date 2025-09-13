@@ -9,7 +9,7 @@ class RedisTokenBlacklistRepository extends ITokenBlackListRepository {
 
     async exists(token) {
         // Verifica se o token existe na blacklist
-        const result = await redisClient.exists('blacklist:${token}');
+        const result = await redisClient.exists(`blacklist:${token}`);
         return result === 1; // Redis retorna 1 se existe, 0 se não existe
     }
 }

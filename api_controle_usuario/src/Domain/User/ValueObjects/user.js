@@ -4,7 +4,7 @@ const Name = require('./name');
 const { v4: uuidv4 } = require('uuid');
 
 class User {
-  constructor(name, email, password, id = uuidv4()) {
+  constructor(name, email, password, id = uuidv4(), isHashed = false) {
     if (!id || !name || !email || !password) {
       throw new Error("User properties cannot be empty.");
     }
@@ -13,7 +13,7 @@ class User {
     this.name = new Name(name);
     this.email = new Email(email);
     // Password Value Object já lida com hashing ao ser criado
-    this.password = new Password(password);
+    this.password = new Password(password, isHashed);
   }
 
   // Métodos de comportamento de domínio
