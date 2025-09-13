@@ -50,19 +50,19 @@ Servidor disponível em `http://127.0.0.1:3000`
 ### Fluxo demonstrativo (prints)
 - Registro
 
-![register](Api_controle_usuario/docs/prints/Register.png)
+![Register](Api_controle_usuario/docs/prints/Register.png)
 
 - Login (retorna o JWT)
 
-![login](Api_controle_usuario/docs/prints/login.png)
+![Login](Api_controle_usuario/docs/prints/login.png)
 
 - Logout bem-sucedido (token incluído na blacklist)
 
-![logoutComSucesso](Api_controle_usuario/docs/prints/logout1.png)
+![Logout1](Api_controle_usuario/docs/prints/logout1.png)
 
 - Logout repetido (token já revogado → 401 Unauthorized)
 
-![logoutRepetido(invalido)](Api_controle_usuario/docs/prints/logoutErro.png)
+![LogoutErro](Api_controle_usuario/docs/prints/logoutErro.png)
 
 ### Notas técnicas
 - Blacklist: chave no Redis `blacklist:token:<token>` com TTL calculado a partir do `exp` do JWT
